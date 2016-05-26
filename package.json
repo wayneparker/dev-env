@@ -1,0 +1,19 @@
+{
+  "name": "dev-env",
+  "version": "0.0.1",
+  "description": "My Dev Environment",
+  "main": "/production/index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wayneparker/dev-env.git"
+  },
+  "author": "Wayne Parker (wayne@wparker.io)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wayneparker/dev-env/issues"
+  },
+  "homepage": "https://github.com/wayneparker/dev-env#readme"
+}
