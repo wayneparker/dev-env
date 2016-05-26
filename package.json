@@ -4,20 +4,20 @@
   "description": "My Dev Environment",
   "author": "Wayne Parker (wayne@wparker.io)",
   "license": "MIT",
-
   "main": "/production/index.html",
   "homepage": "https://github.com/wayneparker/dev-env#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/wayneparker/dev-env.git"
   },
-  "bugs": { "url": "https://github.com/wayneparker/dev-env/issues"  },
-
+  "bugs": {
+    "url": "https://github.com/wayneparker/dev-env/issues"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-
   "devDependencies": {
-    "bower": "^1.7.9"
+    "bower": "^1.7.9",
+    "gulp": "^3.9.1"
   }
 }
