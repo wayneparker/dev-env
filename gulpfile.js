@@ -63,6 +63,11 @@ var paths = {
 
 // Push compiled / static assets to Staging
 
+gulp.task('html', function() {
+	return gulp.src(paths.src.root + '/**.*.html')
+		.pipe(gulp.dest(paths.dev.root));
+});
+
 // TODO: Replace with gulp-minify with sourcemaps
 gulp.task('css', function() {
 	return gulp.src(paths.src.css + '/**.*')
@@ -97,6 +102,11 @@ gulp.task('media', function() {
 
 
 // Push to Production for deployment
+
+gulp.task('html', function() {
+	return gulp.src(paths.src.root + '/**.*.html')
+		.pipe(gulp.dest(paths.prod.root));
+});
 
 // TODO: Replace with gulp-minify-css, NO source maps
 gulp.task('css-prod', function() {
@@ -135,14 +145,15 @@ gulp.task('media-prod', function() {
 //## Watch for Changes
 
 gulp.task('watch', function () {
-	gulp.watch([paths.src.css + '**/*'],   ['css']);
-	gulp.watch([paths.src.js + '**/*'],    ['js']);
-	gulp.watch([paths.src.img + '**/*'],   ['img']);
-	gulp.watch([paths.src.docs + '**/*'],  ['docs']);
-	gulp.watch([paths.src.fonts + '**/*'], ['fonts']);
+	gulp.watch([paths.src.root + '**/*.html'], ['html']);
+	gulp.watch([paths.src.css + '**/*'],       ['css']);
+	gulp.watch([paths.src.js + '**/*'],        ['js']);
+	gulp.watch([paths.src.img + '**/*'],       ['img']);
+	gulp.watch([paths.src.docs + '**/*'],      ['docs']);
+	gulp.watch([paths.src.fonts + '**/*'],     ['fonts']);
 });
 
 
-gulp.task('default', ['css', 'js', 'img', 'fonts', 'docs', 'media'], function() {
+gulp.task('default', ['html', 'css', 'js', 'img', 'fonts', 'docs', 'media'], function() {
   // place code for your default task here
 });
