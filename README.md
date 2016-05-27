@@ -26,7 +26,7 @@ Tools I’d like to incorporate:
 Priorities, in order:
 
 * (√) folder structure: /src > /dev > /dist, styles/ > css/, scripts/ > js/, etc.
-* Stub files for CSS, JS, HTML
+* (√) Stub files for CSS, JS, HTML
 * gulp copy tasks and gulp watch
 * file copies to /dev: css/, js/, files/, media/, fonts/, 
 * production file push to /dist

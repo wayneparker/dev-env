@@ -58,13 +58,18 @@ var paths = {
 
 // Task Definitions
 
+// TODO: Add scripts to compile / concat Scripts and Styles
+
+
 // Push compiled / static assets to Staging
 
+// TODO: Replace with gulp-minify with sourcemaps
 gulp.task('css', function() {
 	return gulp.src([paths.src.css + '/**.*'])
 		.pipe(gulp.dest(paths.dev.css));
 });
 
+// TODO: Replace with gulp-uglify with sourcemaps
 gulp.task('js', function() {
 	return gulp.src([paths.src.js + '/**.*'])
 		.pipe(gulp.dest(paths.dev.js));
@@ -89,6 +94,43 @@ gulp.task('media', function() {
 	return gulp.src([paths.src.media + '/**.*'])
 		.pipe(gulp.dest(paths.dev.media));
 });
+
+
+// Push to Production for deployment
+
+// TODO: Replace with gulp-minify-css, NO source maps
+gulp.task('css-prod', function() {
+	return gulp.src([paths.src.css + '/**.*'])
+		.pipe(gulp.dest(paths.prod.css));
+});
+
+// TODO: Replace with gulp-uglify, NO sourcemaps
+gulp.task('js-prod', function() {
+	return gulp.src([paths.src.js + '/**.*'])
+		.pipe(gulp.dest(paths.prod.js));
+});
+
+gulp.task('img-prod', function() {
+	return gulp.src([paths.src.img + '/**.*'])
+		.pipe(gulp.dest(paths.prod.img));
+});
+
+gulp.task('fonts-prod', function() {
+	return gulp.src([paths.src.fonts + '/**.*'])
+		.pipe(gulp.dest(paths.prod.fonts));
+});
+
+gulp.task('docs-prod', function() {
+	return gulp.src([paths.src.docs + '/**.*'])
+		.pipe(gulp.dest(paths.prod.docs));
+});
+
+gulp.task('media-prod', function() {
+	return gulp.src([paths.src.media + '/**.*'])
+		.pipe(gulp.dest(paths.prod.media));
+});
+
+
 
 gulp.task('default', ['css', 'js', 'img', 'fonts', 'docs', 'media'], function() {
   // place code for your default task here
