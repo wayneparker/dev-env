@@ -1,12 +1,18 @@
 My Very Own Development Environment
-==============================================
+===
 
 *Wayne Parker  
 <wayne@wparker.io>  
 Project begun: 2016-05-26*
 
-Purpose
-------------
+Current Status
+---
+
+* gulp is coming along now; Sass is compiling, need to add autoprefixer, sourcemaps and clean-css (for staging).
+* I had to rebuild gulp almost completely to avoid the FSEvent error. Still getting errors in the logs, but no hangs or overruns.
+
+Purpose and Goals
+---
 
 Practice setting up a complex project infrastructure from scratch, and to use the results as a template for future projects.
 
@@ -26,16 +32,19 @@ Tools I’d like to incorporate:
 Priorities, in order:
 
 * (√) folder structure: /src > /dev > /dist, styles/ > css/, scripts/ > js/, etc.
-* (√) Stub files for CSS, JS, HTML
-* gulp copy tasks and gulp watch
-* file copies to /dev: css/, js/, files/, media/, fonts/, 
-* production file push to /dist
-* sass, including vendor CSS and sourcemaps
+* (√) stub files for CSS, JS, HTML
+* (√) gulp copy tasks and gulp watch
+* (√) file copies to /dev: css/, js/, files/, media/, fonts/
+* (√) sass/scss compilation
+* CSS sourcemaps
+* Minified and sourcemapped CSS to staging
+* _vendor.scss built automatically from bower_components CSS
 
 
 Directory Structure
--------------------
+---
 
+(Two popular standards: src / dev / dist, and assets / staging / production)
 - **/assets/**		(source files for *everything*)  
 	- index.html
 	- styles/ 	(.sass, .scss, .less, .stylus, whatevs)
@@ -91,27 +100,20 @@ Directory Structure
 
 
 Step by Step Set-up
--------------------
+---
 
 1. Create `README.md` at the project root. (You're lookin’ at it.)
-
 1. Set up version control: `git init`.  
    WebStorm/PhpStorm will kvetch about an “Unregistered VCS root detected”; go ahead and click “Add root” and get on with your life.
-
 1. Install “The Compleat `.gitignore`.”  It includes tons of exclusions for crap files created by lots of OSes, IDEs and other software.
-
 1. Set up node & npm. I have it installed globally, so all we need is:  
    `npm init` and answer the questions. We can always edit `package.json` later.
-   
-1. Set up bower: `npm install -D bower`
-      
+1. Set up bower: `npm install -D bower`   
 1. Install gulp: `npm install -D gulp`
-
 1. Create a “starter” `gulpfile.js`:  
-> 'use strict';  
-> var gulp = require('gulp');  
-> gulp.task('default', function() {  
->     // place code for your default task here  
-> });
-
+	> 'use strict';  
+	> var gulp = require('gulp');  
+	> gulp.task('default', function() {  
+	>     // place code for your default task here  
+	> });
 1. This would be a good point do do an initial commit to `git`.

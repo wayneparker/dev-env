@@ -4,7 +4,10 @@
 var gulp = require('gulp');
 
 // Styles
+var autoprefixer = require('gulp-autoprefixer');
+var cleancss = require('gulp-clean-css');
 var sass = require('gulp-sass');
+var sourcemaps = require('gulp-sourcemaps');
 
 // Paths
 var
@@ -74,13 +77,19 @@ gulp.task('html', function() {
 // compile sass/scss to css
 gulp.task('sass', function() {
 	return gulp.src(paths.src.styles.sass)
+		.pipe(sourcemaps.init())
 		.pipe(sass().on('error', sass.logError))
+		.pipe(autoprefixer('last 2 versions'))
+		.pipe(sourcemaps.write('./'))
 		.pipe(gulp.dest(paths.src.css));
 });
 
 // push CSS up to staging
 gulp.task('css', function() {
 	return gulp.src(paths.src.css + '/**/*.css')
+		.pipe(sourcemaps.init())
+		.pipe(cleancss())
+		.pipe(sourcemaps.write('./'))
 		.pipe(gulp.dest(paths.dev.css));
 });
 
