@@ -1,15 +1,15 @@
 My Very Own Development Environment
 ===
 
-*Wayne Parker  
-<wayne@wparker.io>  
-Project begun: 2016-05-26*
+*Wayne Parker*  
+*wayne@wparker.io>*  
+*Project begun: 2016-05-26*
 
 Current Status
 ---
 
-* gulp is coming along now; Sass is compiling, need to add autoprefixer, sourcemaps and clean-css (for staging).
-* I had to rebuild gulp almost completely to avoid the FSEvent error. Still getting errors in the logs, but no hangs or overruns.
+* Need a `gulp vendor` script to build vendor CSS and JS files; can’t be fully automatic, will need to list required components, á là Aristada
+* Still need browsersync and babel!
 
 Purpose and Goals
 ---
@@ -36,8 +36,9 @@ Priorities, in order:
 * (√) gulp copy tasks and gulp watch
 * (√) file copies to /dev: css/, js/, files/, media/, fonts/
 * (√) sass/scss compilation
-* CSS sourcemaps
-* Minified and sourcemapped CSS to staging
+* (√) CSS sourcemaps
+* (√) Minified and sourcemapped CSS to staging
+* (√) compile ES6 / multiple JS to app.js, with babel & uglify
 * _vendor.scss built automatically from bower_components CSS
 
 

@@ -1,5 +1,8 @@
 'use strict';
 
+//
+// ## Imports
+
 // General
 var gulp = require('gulp');
 var concat = require('gulp-concat');
@@ -10,7 +13,13 @@ var cleancss = require('gulp-clean-css');
 var sass = require('gulp-sass');
 var sourcemaps = require('gulp-sourcemaps');
 
-// Paths
+// Scripts
+var babel = require('gulp-babel');
+var eslint = require('gulp-eslint');
+var uglify = require('gulp-uglify');
+
+//
+// ## Paths
 var
 	src =  'assets',
 	dev =  'staging',
@@ -66,7 +75,7 @@ var paths = {
 
 
 //
-//## Task Definitions
+// ## Task Definitions
 
 // push static / compiled HTML to staging
 gulp.task('html', function() {
@@ -87,7 +96,7 @@ gulp.task('sass', function() {
 		.pipe(gulp.dest(paths.src.css));
 });
 
-// push CSS up to staging
+// push CSS to Staging
 gulp.task('css', ['sass'], function() {
 	return gulp.src(paths.src.css + '/**/*.css')
 		.pipe(sourcemaps.init())
@@ -97,21 +106,62 @@ gulp.task('css', ['sass'], function() {
 		.pipe(gulp.dest(paths.dev.css));
 });
 
+// Scripts v1.0
 
-// TODO: Add gulp-uglify with sourcemaps
-gulp.task('js', function() {
+gulp.task('lint', function () {
+	return gulp.src([
+		paths.src.scripts.js,
+		paths.src.scripts.es6,
+		'gulpfile.js'
+	])
+		.pipe(eslint())
+		.pipe(eslint.format())
+		.pipe(eslint.failAfterError());
+});
+
+gulp.task('scripts', ['lint'], function() {
+	return gulp.src([
+		paths.src.scripts.js,
+		paths.src.scripts.es6
+	])
+		.pipe(sourcemaps.init())
+		.pipe(babel({ presets: ['es2015'] }))
+		.pipe(concat('app.js'))
+		.pipe(sourcemaps.write('./'))
+		.pipe(gulp.dest(paths.src.js))
+});
+
+gulp.task('js', ['scripts'], function() {
 	return gulp.src(paths.src.js + '/**/*')
+		.pipe(sourcemaps.init())
+		//.pipe(uglify())
+		.pipe(concat('app.min.js'))
+		.pipe(sourcemaps.write('./'))
 		.pipe(gulp.dest(paths.dev.js));
+});
+
+// Static Assets
+
+// Push to Production
+
+// push CSS to Production
+gulp.task('css-prod', ['sass'], function() {
+	return gulp.src(paths.src.css + '/**/*.css')
+		.pipe(concat('styles.min.css'))
+		.pipe(cleancss())
+		.pipe(gulp.dest(paths.prod.css));
 });
 
 
 //
-//## Watch for Changes
+// ## Watch for Changes
 
 gulp.task('watch', function () {
 	gulp.watch(paths.src.root + '/**/*.html', ['html']);
 	gulp.watch(paths.src.styles.sass, ['sass', 'css']);
 	gulp.watch(paths.src.css + '/**/*', ['css']);
+	gulp.watch(paths.src.scripts.js, ['js']);
+	gulp.watch(paths.src.scripts.es6, ['js']);
 	gulp.watch(paths.src.js + '/**/*', ['js']);
 	//gulp.watch(paths.src.img + '/**/*', ['img']);
 });
