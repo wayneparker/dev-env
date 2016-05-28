@@ -9,7 +9,20 @@ Current Status
 ---
 
 * Need a `gulp vendor` script to build vendor CSS and JS files; can’t be fully automatic, will need to list required components, á là Aristada
-* Still need browsersync and babel!
+* Still need browsersync!
+
+Priorities, in order:
+
+* (√) folder structure: /src > /dev > /dist, styles/ > css/, scripts/ > js/, etc.
+* (√) stub files for CSS, JS, HTML
+* (√) gulp copy tasks and gulp watch
+* (√) file copies to /dev: css/, js/, files/, media/, fonts/
+* (√) sass/scss compilation
+* (√) CSS sourcemaps
+* (√) Minified and sourcemapped CSS to staging
+* (√) compile ES6 / multiple JS to app.js, with babel & uglify
+* _vendor.scss built automatically from bower_components CSS
+
 
 Purpose and Goals
 ---
@@ -28,18 +41,6 @@ Tools I’d like to incorporate:
 * unit testing (jasmine? mocha?)
 * jade?
 * auto-versioning via git?
-
-Priorities, in order:
-
-* (√) folder structure: /src > /dev > /dist, styles/ > css/, scripts/ > js/, etc.
-* (√) stub files for CSS, JS, HTML
-* (√) gulp copy tasks and gulp watch
-* (√) file copies to /dev: css/, js/, files/, media/, fonts/
-* (√) sass/scss compilation
-* (√) CSS sourcemaps
-* (√) Minified and sourcemapped CSS to staging
-* (√) compile ES6 / multiple JS to app.js, with babel & uglify
-* _vendor.scss built automatically from bower_components CSS
 
 
 Directory Structure
