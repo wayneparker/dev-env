@@ -70,11 +70,20 @@ gulp.task('html', function() {
 		.pipe(gulp.dest(paths.dev.root));
 });
 
+
+// compile sass/scss to css
+gulp.task('sass', function() {
+	return gulp.src(paths.src.styles.sass)
+		.pipe(sass().on('error', sass.logError))
+		.pipe(gulp.dest(paths.src.css));
+});
+
 // push CSS up to staging
 gulp.task('css', function() {
 	return gulp.src(paths.src.css + '/**/*.css')
 		.pipe(gulp.dest(paths.dev.css));
 });
+
 
 // TODO: Add gulp-uglify with sourcemaps
 gulp.task('js', function() {
@@ -88,7 +97,7 @@ gulp.task('js', function() {
 
 gulp.task('watch', function () {
 	gulp.watch(paths.src.root + '/**/*.html', ['html']);
-	gulp.watch(paths.src.sass, ['sass']);
+	gulp.watch(paths.src.styles.sass, ['sass', 'css']);
 	gulp.watch(paths.src.css + '/**/*', ['css']);
 	gulp.watch(paths.src.js + '/**/*', ['js']);
 	//gulp.watch(paths.src.img + '/**/*', ['img']);
