@@ -65,15 +65,16 @@ var paths = {
 };
 
 
-// Task Definitions
+//
+//## Task Definitions
 
-// Push compiled / static assets to Staging
-
+// push static / compiled HTML to staging
 gulp.task('html', function() {
 	return gulp.src(paths.src.root + '/**/*.html')
 		.pipe(gulp.dest(paths.dev.root));
 });
 
+// Styles
 
 // compile sass/scss to css
 gulp.task('sass', function() {
@@ -87,7 +88,7 @@ gulp.task('sass', function() {
 });
 
 // push CSS up to staging
-gulp.task('css', function() {
+gulp.task('css', ['sass'], function() {
 	return gulp.src(paths.src.css + '/**/*.css')
 		.pipe(sourcemaps.init())
 		.pipe(concat('styles.min.css'))
