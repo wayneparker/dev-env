@@ -1,7 +1,8 @@
 'use strict';
 
-// Imports
+// General
 var gulp = require('gulp');
+var concat = require('gulp-concat');
 
 // Styles
 var autoprefixer = require('gulp-autoprefixer');
@@ -79,6 +80,7 @@ gulp.task('sass', function() {
 	return gulp.src(paths.src.styles.sass)
 		.pipe(sourcemaps.init())
 		.pipe(sass().on('error', sass.logError))
+		.pipe(concat('styles.css'))
 		.pipe(autoprefixer('last 2 versions'))
 		.pipe(sourcemaps.write('./'))
 		.pipe(gulp.dest(paths.src.css));
@@ -88,6 +90,7 @@ gulp.task('sass', function() {
 gulp.task('css', function() {
 	return gulp.src(paths.src.css + '/**/*.css')
 		.pipe(sourcemaps.init())
+		.pipe(concat('styles.min.css'))
 		.pipe(cleancss())
 		.pipe(sourcemaps.write('./'))
 		.pipe(gulp.dest(paths.dev.css));
