@@ -8,7 +8,11 @@ My Very Own Development Environment
 Current Status
 ---
 
+* Got babel installed and apparently working; **need some ES6 code to monkey with**.
+* **gulp uglify is børked. Really need to fix.**
 * Need a `gulp vendor` script to build vendor CSS and JS files; can’t be fully automatic, will need to list required components, á là Aristada
+* gulp task to optimize / copy image assets
+* gulp tasks to copy static assets
 * Still need browsersync!
 
 Priorities, in order:
@@ -22,6 +26,8 @@ Priorities, in order:
 * (√) Minified and sourcemapped CSS to staging
 * (√) compile ES6 / multiple JS to app.js, with babel & uglify
 * _vendor.scss built automatically from bower_components CSS
+* gulp task to optimize / copy image assets
+* gulp tasks to copy static assets
 
 
 Purpose and Goals
