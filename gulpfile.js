@@ -32,7 +32,7 @@ var paths = {
 			sass: [
 				       src + '/styles/**/*.sass',
 				       src + '/styles/**/*.scss',
-				 '!' + src + '/styles/**/*_.sass',
+				 '!' + src + '/styles/**/*_.sass', // TODO: do I need to manually exclude Sass partials?
 				 '!' + src + '/styles/**/*_.scss'
 			],
 			less:    src + '/styles/**/*.less'
@@ -85,20 +85,21 @@ gulp.task('html', function() {
 
 // Styles
 
-// compile sass/scss to css
+// compile sass/scss source to css
 gulp.task('sass', function() {
 	return gulp.src(paths.src.styles.sass)
 		.pipe(sourcemaps.init())
 		.pipe(sass().on('error', sass.logError))
 		.pipe(concat('styles.css'))
-		.pipe(autoprefixer('last 2 versions'))
+		.pipe(autoprefixer('last 2 versions')) // TODO: Read autoprefixer docs, want finer control over browser compat
 		.pipe(sourcemaps.write('./'))
 		.pipe(gulp.dest(paths.src.css));
 });
+// could do the same for Less source if I wanted
 
 // push CSS to Staging
 gulp.task('css', ['sass'], function() {
-	return gulp.src(paths.src.css + '/**/*.css')
+	return gulp.src(paths.src.css + '/**/*.css') // Don’t need to concat, done by `gulp sass` already
 		.pipe(sourcemaps.init())
 		.pipe(concat('styles.min.css'))
 		.pipe(cleancss())
@@ -108,17 +109,19 @@ gulp.task('css', ['sass'], function() {
 
 // Scripts v1.0
 
+// lint JS source with ESLint
 gulp.task('lint', function () {
 	return gulp.src([
 		paths.src.scripts.js,
 		paths.src.scripts.es6,
-		'gulpfile.js'
+		'gulpfile.js' // add any other JS-format config files as needed
 	])
 		.pipe(eslint())
 		.pipe(eslint.format())
 		.pipe(eslint.failAfterError());
 });
 
+// compile JS / ES6 source to JS (ES5)
 gulp.task('scripts', ['lint'], function() {
 	return gulp.src([
 		paths.src.scripts.js,
@@ -131,11 +134,12 @@ gulp.task('scripts', ['lint'], function() {
 		.pipe(gulp.dest(paths.src.js))
 });
 
+// push JavaScript to Dev
 gulp.task('js', ['scripts'], function() {
-	return gulp.src(paths.src.js + '/**/*')
+	return gulp.src([paths.src.js + '/**/*']) // TODO: need to exclude vendor, process separately
 		.pipe(sourcemaps.init())
-		//.pipe(uglify())
-		.pipe(concat('app.min.js'))
+		//.pipe(uglify()) // TODO: why is uglify børked?!?!?!?
+		.pipe(concat('app.min.js')) // TODO: `gulp scripts` is already concatting app JS; delete from `gulp js`
 		.pipe(sourcemaps.write('./'))
 		.pipe(gulp.dest(paths.dev.js));
 });
