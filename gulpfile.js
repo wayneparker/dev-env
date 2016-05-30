@@ -141,10 +141,12 @@ gulp.task('scripts', ['lint'], function() {
 
 // push JavaScript to Dev
 gulp.task('js', ['scripts'], function() {
-	return gulp.src([paths.src.js + '/**/*']) // TODO: need to exclude vendor, process separately
+	return gulp.src([
+		paths.src.js + 'app.js',
+		paths.src.js + 'vendor.js' // TODO: separate task to build vendor.js
+	])
 		.pipe(sourcemaps.init())
 		//.pipe(uglify()) // TODO: why is uglify børked?!?!?!?
-		.pipe(concat('app.min.js')) // TODO: `gulp scripts` is already concatting app JS; delete from `gulp js`
 		.pipe(sourcemaps.write('.'))
 		.pipe(gulp.dest(paths.dev.js));
 });
