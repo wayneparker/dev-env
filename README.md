@@ -8,26 +8,25 @@ My Very Own Development Environment
 Current Status
 ---
 
-* Got babel installed and apparently working; **need some ES6 code to monkey with**.
-* **gulp uglify is børked. Really need to fix.**
-* Need a `gulp vendor` script to build vendor CSS and JS files; can’t be fully automatic, will need to list required components, á là Aristada
-* gulp task to optimize / copy image assets
-* gulp tasks to copy static assets
-* Still need browsersync!
+* Got `babel installed` and apparently working; **need some ES6 code to monkey with**.
 
 Priorities, in order:
 
-* (√) folder structure: /src > /dev > /dist, styles/ > css/, scripts/ > js/, etc.
-* (√) stub files for CSS, JS, HTML
-* (√) gulp copy tasks and gulp watch
-* (√) file copies to /dev: css/, js/, files/, media/, fonts/
-* (√) sass/scss compilation
+* (√) Folder structure: /src > /dev > /dist, styles/ > css/, scripts/ > js/, etc.
+* (√) Stub files for CSS, JS, HTML
+* (√) Add gulp copy tasks and gulp watch
+* (√) File copies to /dev: css/, js/, files/, media/, fonts/
+* (√) Add sass/scss compilation
 * (√) CSS sourcemaps
 * (√) Minified and sourcemapped CSS to staging
-* (√) compile ES6 / multiple JS to app.js, with babel & uglify
-* _vendor.scss built automatically from bower_components CSS
-* gulp task to optimize / copy image assets
-* gulp tasks to copy static assets
+* (√) Compile ES6 / multiple JS to app.js, with `gulp-babel` & `gulp-uglify`
+* (√) Fix `gulp-uglify`! (Not sure what happened, but it's working now.)
+* (√) Add gulp tasks to collect vendor CSS and JS from `bower_components`, and push to staging & production
+* (√) Replace separate staging / production tasks with `--production` flag & `gulp-util`
+* Add gulp task to optimize / copy image assets
+* Add gulp tasks to copy static assets
+* Incorporate `browsersync`
+
 
 
 Purpose and Goals

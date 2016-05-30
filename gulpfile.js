@@ -6,6 +6,7 @@
 // General
 var gulp = require('gulp');
 var concat = require('gulp-concat');
+var util = require('gulp-util');
 
 // Styles
 var autoprefixer = require('gulp-autoprefixer');
@@ -18,14 +19,32 @@ var babel = require('gulp-babel');
 var eslint = require('gulp-eslint');
 var uglify = require('gulp-uglify');
 
+// Environment
+var productionFlag = !!util.env.production; // `gulp --production` flag
+
+
 //
 // ## Paths
 var
 	src =  'assets',
 	dev =  'staging',
-	prod = 'production'
+	prod = 'production',
+	vendor = 'bower_components'
 	;
 var paths = {
+	vendor: {
+		styles: [
+			         vendor + '/normalize-css/normalize.css',
+			         vendor + '/bootstrap/dist/css/bootstrap.css',
+			         vendor + '/bootstrap/dist/css/bootstrap-theme.css'
+			         // add as needed
+		],
+		scripts: [
+			         vendor + '/jquery/dist/jquery.js',
+			         vendor + '/bootstrap/dist/js/bootstrap.js'
+			         // add as needed
+		]
+	},
 	src: {
 		root:      src,
 		styles: {
@@ -37,7 +56,6 @@ var paths = {
 		},
 		css:       src + '/css',
 		scripts: {
-			es6:     src + '/scripts/**/*.es6',
 			js:      src + '/scripts/**/*.js',
 			coffee:  src + '/scripts/**/*.coffee'
 		},
@@ -75,16 +93,21 @@ var paths = {
 //
 // ## Task Definitions
 
+// HTML files
+
+// This is where we’d compile templates into HTML, if we were rockin’ Jade or whatever
+
 // push static / compiled HTML to Staging
 gulp.task('html', function() {
 	return gulp.src(paths.src.root + '/**/*.html')
-		.pipe(gulp.dest(paths.dev.root));
+		.pipe(gulp.dest(productionFlag ? paths.prod.root : paths.dev.root));
 });
+
 
 // Styles
 
-// compile sass/scss source to CSS
-gulp.task('sass', function() {
+// compile application sass/scss source to `styles.CSS`
+gulp.task('styles-sass', function() {
 	return gulp.src(paths.src.styles.sass)
 		.pipe(sourcemaps.init())
 		.pipe(sass().on('error', sass.logError))
@@ -93,32 +116,43 @@ gulp.task('sass', function() {
 		.pipe(sourcemaps.write('.'))
 		.pipe(gulp.dest(paths.src.css));
 });
-// could do the same for Less source if I wanted
+// we could do the same for Less source, if that’s your jam
 
-// push CSS to Staging
-gulp.task('css', ['sass'], function() {
+// collect vendor stylesheets into `vendor.CSS`
+gulp.task('styles-vendor', function() {
+	return gulp.src(paths.vendor.styles)
+		.pipe(concat('vendor.css'))
+		.pipe(gulp.dest(paths.src.css));
+});
+
+// push `styles.min.CSS` to Staging or Production
+gulp.task('css-app', ['styles-sass'], function() {
 	return gulp.src(paths.src.css + '/styles.css')
-		.pipe(sourcemaps.init())
-		.pipe(concat('styles.min.css')) // not really a concat, just renaming one file
+		.pipe(productionFlag ? util.noop() : sourcemaps.init()) // no sourcemaps in Production
+		.pipe(concat('styles.min.css')) // not really a concat, just renaming the file
 		.pipe(cleancss())
-		.pipe(sourcemaps.write('.'))
-		.pipe(gulp.dest(paths.dev.css));
+		.pipe(productionFlag ? util.noop() : sourcemaps.write('.'))
+		.pipe(gulp.dest(productionFlag ? paths.prod.css : paths.dev.css));
 });
 
-// push CSS to Production
-gulp.task('css-prod', ['sass'], function() {
-	return gulp.src(paths.dev.css + '/styles.min.css')
-		.pipe(concat('styles.min.css')) // not really a concat, just renaming one file
-		.pipe(gulp.dest(paths.prod.css));
+// push `vendor.min.CSS` to Staging or Production
+gulp.task('css-vendor', ['styles-vendor'], function() {
+	return gulp.src(paths.src.css + '/vendor.css')
+		.pipe(concat('vendor.min.css')) // not really a concat, just renaming the file
+		.pipe(cleancss())
+		.pipe(gulp.dest(productionFlag ? paths.prod.css : paths.dev.css));
 });
 
-// Scripts v1.0
+// ALL Style Tasks
+gulp.task('styles', ['css-app', 'css-vendor']);
+
+
+// Scripts
 
 // lint JS source with ESLint
 gulp.task('lint', function () {
 	return gulp.src([
 		paths.src.scripts.js,
-		paths.src.scripts.es6,
 		'gulpfile.js' // add any other JS-format config files as needed
 	])
 		.pipe(eslint())
@@ -126,12 +160,9 @@ gulp.task('lint', function () {
 		.pipe(eslint.failAfterError());
 });
 
-// compile JS / ES6 source to JS (ES5)
-gulp.task('scripts', ['lint'], function() {
-	return gulp.src([
-		paths.src.scripts.js,
-		paths.src.scripts.es6
-	])
+// compile & concat JS / ES6 source to `app.JS` (ES5)
+gulp.task('scripts-compile', ['lint'], function() {
+	return gulp.src(paths.src.scripts.js)
 		.pipe(sourcemaps.init())
 		.pipe(babel({ presets: ['es2015'] }))
 		.pipe(concat('app.js'))
@@ -139,29 +170,48 @@ gulp.task('scripts', ['lint'], function() {
 		.pipe(gulp.dest(paths.src.js))
 });
 
-// push JavaScript to Dev
-gulp.task('js', ['scripts'], function() {
-	return gulp.src([
-		paths.src.js + 'app.js',
-		paths.src.js + 'vendor.js' // TODO: separate task to build vendor.js
-	])
+// collect vendor scripts into `vendor.JS`
+gulp.task('scripts-vendor', function() {
+	return gulp.src(paths.vendor.scripts)
 		.pipe(sourcemaps.init())
-		//.pipe(uglify()) // TODO: why is uglify børked?!?!?!?
+		.pipe(concat('vendor.js'))
 		.pipe(sourcemaps.write('.'))
-		.pipe(gulp.dest(paths.dev.js));
+		.pipe(gulp.dest(paths.src.js));
 });
+
+// push `app.min.JS` to Staging or Production
+gulp.task('js-app', ['scripts-compile'], function() {
+	return gulp.src([
+		paths.src.js + '/app.js'
+	])
+		.pipe(productionFlag ? util.noop() : sourcemaps.init()) // no sourcemaps in Production
+		.pipe(concat('app.min.js'))
+		.pipe(uglify())
+		.pipe(productionFlag ? util.noop() : sourcemaps.write('.'))
+		.pipe(gulp.dest(productionFlag ? paths.prod.js : paths.dev.js));
+});
+
+// push `vendor.min.JS` to Staging or Production
+gulp.task('js-vendor', ['scripts-vendor'], function() {
+	return gulp.src([
+		paths.src.js + '/vendor.js'
+	])
+		.pipe(productionFlag ? util.noop() : sourcemaps.init()) // no sourcemaps in Production
+		.pipe(concat('vendor.min.js'))
+		.pipe(uglify())
+		.pipe(productionFlag ? util.noop() : sourcemaps.write('.'))
+		.pipe(gulp.dest(productionFlag ? paths.prod.js : paths.dev.js));
+});
+
+// ALL Script Tasks
+gulp.task('scripts', ['js-app', 'js-vendor']);
+
 
 // Static Assets
 
 // Push to Production
-
-// push CSS to Production
-gulp.task('css-prod', ['sass'], function() {
-	return gulp.src(paths.src.css + '/**/*.css')
-		.pipe(concat('styles.min.css'))
-		.pipe(cleancss())
-		.pipe(gulp.dest(paths.prod.css));
-});
+// TODO: tasks to optimize images (CHANGED ONLY)
+// TODO: tasks to push other static assets (docs, fonts, img, media, etc.) (CHANGED ONLY)
 
 
 //
@@ -169,16 +219,15 @@ gulp.task('css-prod', ['sass'], function() {
 
 gulp.task('watch', function () {
 	gulp.watch(paths.src.root + '/**/*.html', ['html']);
-	gulp.watch(paths.src.styles.sass, ['sass', 'css']);
-	gulp.watch(paths.src.css + '/**/*', ['css']);
-	gulp.watch(paths.src.scripts.js, ['js']);
-	gulp.watch(paths.src.scripts.es6, ['js']);
-	gulp.watch(paths.src.js + '/**/*', ['js']);
+	gulp.watch(paths.src.styles.sass, ['styles-sass']);
+	gulp.watch(paths.src.css + '/**/*', ['css-app']);
+	gulp.watch(paths.src.scripts.js, ['scripts-compile']);
+	gulp.watch(paths.src.js + '/**/*', ['js-app']);
 	//gulp.watch(paths.src.img + '/**/*', ['img']);
 });
 
 
 // add 'watch' to default?
-gulp.task('default', ['html', 'css', 'js', 'img', 'fonts', 'docs', 'media'], function() {
-  // additional code for any default task here. or not.
+gulp.task('default', ['html', 'styles', 'scripts'], function() {
+  // additional code for any default task here… or not.
 });
