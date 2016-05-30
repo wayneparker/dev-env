@@ -105,6 +105,13 @@ gulp.task('css', ['sass'], function() {
 		.pipe(gulp.dest(paths.dev.css));
 });
 
+// push CSS to Production
+gulp.task('css-prod', ['sass'], function() {
+	return gulp.src(paths.dev.css + '/styles.min.css')
+		.pipe(concat('styles.min.css')) // not really a concat, just renaming one file
+		.pipe(gulp.dest(paths.prod.css));
+});
+
 // Scripts v1.0
 
 // lint JS source with ESLint
