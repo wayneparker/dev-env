@@ -219,10 +219,10 @@ gulp.task('scripts', ['js-app', 'js-vendor']);
 
 gulp.task('watch', function () {
 	gulp.watch(paths.src.root + '/**/*.html', ['html']);
-	gulp.watch(paths.src.styles.sass, ['styles-sass']);
-	gulp.watch(paths.src.css + '/**/*', ['css-app']);
-	gulp.watch(paths.src.scripts.js, ['scripts-compile']);
-	gulp.watch(paths.src.js + '/**/*', ['js-app']);
+	gulp.watch(paths.src.styles.sass, ['css-app']);
+	gulp.watch(paths.src.css + '/**/*.css', ['css-app']);
+	gulp.watch(paths.src.scripts.js, ['js-app']);
+	gulp.watch(paths.src.js + '/**/*.js', ['js-app']);
 	//gulp.watch(paths.src.img + '/**/*', ['img']);
 });
 
