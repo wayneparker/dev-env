@@ -75,7 +75,7 @@ var paths = {
 //
 // ## Task Definitions
 
-// push static / compiled HTML to staging
+// push static / compiled HTML to Staging
 gulp.task('html', function() {
 	return gulp.src(paths.src.root + '/**/*.html')
 		.pipe(gulp.dest(paths.dev.root));
@@ -83,14 +83,14 @@ gulp.task('html', function() {
 
 // Styles
 
-// compile sass/scss source to css
+// compile sass/scss source to CSS
 gulp.task('sass', function() {
 	return gulp.src(paths.src.styles.sass)
 		.pipe(sourcemaps.init())
 		.pipe(sass().on('error', sass.logError))
 		.pipe(concat('styles.css'))
 		.pipe(autoprefixer(['> 1%', 'last 2 versions', 'Firefox ESR']))
-		.pipe(sourcemaps.write('./'))
+		.pipe(sourcemaps.write('.'))
 		.pipe(gulp.dest(paths.src.css));
 });
 // could do the same for Less source if I wanted
@@ -101,7 +101,7 @@ gulp.task('css', ['sass'], function() {
 		.pipe(sourcemaps.init())
 		.pipe(concat('styles.min.css')) // not really a concat, just renaming one file
 		.pipe(cleancss())
-		.pipe(sourcemaps.write('./'))
+		.pipe(sourcemaps.write('.'))
 		.pipe(gulp.dest(paths.dev.css));
 });
 
@@ -135,7 +135,7 @@ gulp.task('scripts', ['lint'], function() {
 		.pipe(sourcemaps.init())
 		.pipe(babel({ presets: ['es2015'] }))
 		.pipe(concat('app.js'))
-		.pipe(sourcemaps.write('./'))
+		.pipe(sourcemaps.write('.'))
 		.pipe(gulp.dest(paths.src.js))
 });
 
@@ -145,7 +145,7 @@ gulp.task('js', ['scripts'], function() {
 		.pipe(sourcemaps.init())
 		//.pipe(uglify()) // TODO: why is uglify børked?!?!?!?
 		.pipe(concat('app.min.js')) // TODO: `gulp scripts` is already concatting app JS; delete from `gulp js`
-		.pipe(sourcemaps.write('./'))
+		.pipe(sourcemaps.write('.'))
 		.pipe(gulp.dest(paths.dev.js));
 });
 
@@ -176,6 +176,7 @@ gulp.task('watch', function () {
 });
 
 
+// add 'watch' to default?
 gulp.task('default', ['html', 'css', 'js', 'img', 'fonts', 'docs', 'media'], function() {
-  // place code for your default task here
+  // additional code for any default task here. or not.
 });
