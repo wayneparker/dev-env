@@ -31,9 +31,7 @@ var paths = {
 		styles: {
 			sass: [
 				       src + '/styles/**/*.sass',
-				       src + '/styles/**/*.scss',
-				 '!' + src + '/styles/**/*_.sass', // TODO: do I need to manually exclude Sass partials?
-				 '!' + src + '/styles/**/*_.scss'
+				       src + '/styles/**/*.scss'
 			],
 			less:    src + '/styles/**/*.less'
 		},
@@ -91,7 +89,7 @@ gulp.task('sass', function() {
 		.pipe(sourcemaps.init())
 		.pipe(sass().on('error', sass.logError))
 		.pipe(concat('styles.css'))
-		.pipe(autoprefixer('last 2 versions')) // TODO: Read autoprefixer docs, want finer control over browser compat
+		.pipe(autoprefixer(['> 1%', 'last 2 versions', 'Firefox ESR']))
 		.pipe(sourcemaps.write('./'))
 		.pipe(gulp.dest(paths.src.css));
 });
@@ -99,9 +97,9 @@ gulp.task('sass', function() {
 
 // push CSS to Staging
 gulp.task('css', ['sass'], function() {
-	return gulp.src(paths.src.css + '/**/*.css') // Don’t need to concat, done by `gulp sass` already
+	return gulp.src(paths.src.css + '/styles.css')
 		.pipe(sourcemaps.init())
-		.pipe(concat('styles.min.css'))
+		.pipe(concat('styles.min.css')) // not really a concat, just renaming one file
 		.pipe(cleancss())
 		.pipe(sourcemaps.write('./'))
 		.pipe(gulp.dest(paths.dev.css));
