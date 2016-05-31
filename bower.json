@@ -1,0 +1,22 @@
+{
+  "name": "dev-env",
+  "description": "My Dev Environment",
+  "main": "/production/index.html",
+  "authors": [
+    "Wayne Parker (wayne@wparker.io)"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/wayneparker/dev-env",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.6",
+    "normalize-css": "^4.1.1",
+    "jquery": "^2.2.4"
+  }
+}
