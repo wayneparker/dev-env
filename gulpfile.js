@@ -5,6 +5,7 @@
 
 // General
 var gulp = require('gulp');
+var changed = require('gulp-changed');
 var concat = require('gulp-concat');
 var util = require('gulp-util');
 
@@ -18,6 +19,9 @@ var sourcemaps = require('gulp-sourcemaps');
 var babel = require('gulp-babel');
 var eslint = require('gulp-eslint');
 var uglify = require('gulp-uglify');
+
+// Images
+var imagemin = require('gulp-imagemin');
 
 // Environment
 var productionFlag = !!util.env.production; // `gulp --production` flag
@@ -207,10 +211,24 @@ gulp.task('js-vendor', ['scripts-vendor'], function() {
 gulp.task('scripts', ['js-app', 'js-vendor']);
 
 
+// Images
+
+// optimize images that have changed
+gulp.task('images-opt', function() {
+	return gulp.src(paths.src.images + '/**/*')
+		.pipe(changed(paths.src.img, {hasChanged: changed.compareSha1Digest}))
+		.pipe(gulp.dest(paths.src.img));
+});
+
+// push changed images that to Staging or Production
+gulp.task('images', ['images-opt'], function() {
+	return gulp.src(paths.src.img + '/**/*')
+		.pipe(changed(productionFlag ? paths.prod.img : paths.dev.img, {hasChanged: changed.compareSha1Digest}))
+		.pipe(gulp.dest(productionFlag ? paths.prod.img : paths.dev.img));
+});
+
 // Static Assets
 
-// Push to Production
-// TODO: tasks to optimize images (CHANGED ONLY)
 // TODO: tasks to push other static assets (docs, fonts, img, media, etc.) (CHANGED ONLY)
 
 
@@ -223,7 +241,8 @@ gulp.task('watch', function () {
 	gulp.watch(paths.src.css + '/**/*.css', ['css-app']);
 	gulp.watch(paths.src.scripts.js, ['js-app']);
 	gulp.watch(paths.src.js + '/**/*.js', ['js-app']);
-	//gulp.watch(paths.src.img + '/**/*', ['img']);
+	gulp.watch(paths.src.images + '/**/*', ['images']);
+	gulp.watch(paths.src.img + '/**/*', ['images']);
 });
 
 

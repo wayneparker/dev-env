@@ -8,6 +8,7 @@ My Very Own Development Environment
 Current Status
 ---
 
+* Use `gulp-concat-vendor` instead of my own code
 * Got `babel installed` and apparently working; **need some ES6 code to monkey with**.
 
 Priorities, in order:
@@ -23,7 +24,7 @@ Priorities, in order:
 * (√) Fix `gulp-uglify`! (Not sure what happened, but it's working now.)
 * (√) Add gulp tasks to collect vendor CSS and JS from `bower_components`, and push to staging & production
 * (√) Replace separate staging / production tasks with `--production` flag & `gulp-util`
-* Add gulp task to optimize / copy image assets
+* (√) Add gulp task to optimize / copy image assets (ONLY changed!!!)
 * Add gulp tasks to copy static assets
 * Incorporate `browsersync`
 
