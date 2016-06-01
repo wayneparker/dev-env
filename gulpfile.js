@@ -31,9 +31,9 @@ var productionFlag = !!util.env.production; // `gulp --production` flag
 //
 // ## Paths
 var
-	src =  'assets',
-	dev =  'staging',
-	prod = 'production',
+	src =  'src', //  Alternative scheme: assets / staging / production
+	dev =  'dev',
+	prod = 'dist',
 	vendor = 'bower_components'
 	;
 var paths = {
