@@ -12176,5 +12176,3 @@ if (typeof jQuery === 'undefined') {
   })
 
 }(jQuery);
-
-//# sourceMappingURL=vendor.js.map

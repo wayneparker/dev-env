@@ -19,6 +19,7 @@ var sourcemaps = require('gulp-sourcemaps');
 var babel = require('gulp-babel');
 var eslint = require('gulp-eslint');
 var uglify = require('gulp-uglify');
+var vendorJS = require('gulp-concat-vendor');
 
 // Images
 var imagemin = require('gulp-imagemin');
@@ -38,14 +39,13 @@ var
 var paths = {
 	vendor: {
 		styles: [
-			         vendor + '/normalize-css/normalize.css',
-			         vendor + '/bootstrap/dist/css/bootstrap.css',
-			         vendor + '/bootstrap/dist/css/bootstrap-theme.css'
+			         vendor + '/normalize-css/normalize.css'//,
+			         //vendor + '/bootstrap-sass/assets/stylesheets/_bootstrap.scss'
 			         // add as needed
 		],
 		scripts: [
 			         vendor + '/jquery/dist/jquery.js',
-			         vendor + '/bootstrap/dist/js/bootstrap.js'
+			         vendor + '/bootstrap-sass/assets/javascripts/bootstrap.js'
 			         // add as needed
 		]
 	},
@@ -175,10 +175,19 @@ gulp.task('scripts-compile', ['lint'], function() {
 });
 
 // collect vendor scripts into `vendor.JS`
+/* Disable for now
 gulp.task('scripts-vendor', function() {
 	return gulp.src(paths.vendor.scripts)
 		.pipe(sourcemaps.init())
 		.pipe(concat('vendor.js'))
+		.pipe(sourcemaps.write('.'))
+		.pipe(gulp.dest(paths.src.js));
+});*/
+// Let's try gulp-vendor-concat instead: https://github.com/patrickpietens/gulp-concat-vendor
+gulp.task('scripts-vendor', function() {
+	return gulp.src(paths.vendor.scripts)
+		.pipe(sourcemaps.init())
+		.pipe(vendorJS('vendor.js'))
 		.pipe(sourcemaps.write('.'))
 		.pipe(gulp.dest(paths.src.js));
 });
