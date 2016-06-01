@@ -44,8 +44,8 @@ var paths = {
 			         // add as needed
 		],
 		scripts: [
-			         vendor + '/jquery/dist/jquery.js',
-			         vendor + '/bootstrap-sass/assets/javascripts/bootstrap.js'
+			         //vendor + '/jquery/dist/jquery.js',
+			         //vendor + '/bootstrap-sass/assets/javascripts/bootstrap.js'
 			         // add as needed
 		]
 	},
