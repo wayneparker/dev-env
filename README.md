@@ -13,6 +13,16 @@ Current Status
 
 Priorities, in order:
 
+* Add gulp tasks to copy static assets
+* Flesh out source files with comments, SassDoc/JssDoc, etc.
+* Add gulp-todo to extract tasks
+* Add gulp-strip-debug for production JS
+* Add JSDoc and SassDoc to generate documentation
+* Add CSS/JS hash-naming and HTML replacement
+* Incorporate `browsersync`
+
+Done:
+
 * (√) Folder structure: /src > /dev > /dist, styles/ > css/, scripts/ > js/, etc.
 * (√) Stub files for CSS, JS, HTML
 * (√) Add gulp copy tasks and gulp watch
@@ -25,8 +35,6 @@ Priorities, in order:
 * (√) Add gulp tasks to collect vendor CSS and JS from `bower_components`, and push to staging & production
 * (√) Replace separate staging / production tasks with `--production` flag & `gulp-util`
 * (√) Add gulp task to optimize / copy image assets (ONLY changed!!!)
-* Add gulp tasks to copy static assets
-* Incorporate `browsersync`
 
 
 
