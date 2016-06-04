@@ -13,24 +13,32 @@ Current Status
 
 Priorities, in order:
 
+* Add gulp tasks to copy static assets
+* Flesh out source files with comments, SassDoc/JssDoc, etc.
+* Add gulp-todo to extract tasks
+* Add gulp-strip-debug for production JS
+* Add JSDoc &amp; SassDoc to generate documentation
+* Add CSS/JS hash-naming and HTML replacement
+* Incorporate `browsersync`
+
+Done:
+
 * (√) Folder structure: /src > /dev > /dist, styles/ > css/, scripts/ > js/, etc.
 * (√) Stub files for CSS, JS, HTML
 * (√) Add gulp copy tasks and gulp watch
 * (√) File copies to /dev: css/, js/, files/, media/, fonts/
 * (√) Add sass/scss compilation
 * (√) CSS sourcemaps
-* (√) Minified and sourcemapped CSS to staging
+* (√) Minified &amp; sourcemapped CSS to staging
 * (√) Compile ES6 / multiple JS to app.js, with `gulp-babel` & `gulp-uglify`
 * (√) Fix `gulp-uglify`! (Not sure what happened, but it's working now.)
-* (√) Add gulp tasks to collect vendor CSS and JS from `bower_components`, and push to staging & production
+* (√) Add gulp tasks to collect vendor CSS &amp; JS from `bower_components`, and push to staging & production
 * (√) Replace separate staging / production tasks with `--production` flag & `gulp-util`
 * (√) Add gulp task to optimize / copy image assets (ONLY changed!!!)
-* Add gulp tasks to copy static assets
-* Incorporate `browsersync`
 
 
 
-Purpose and Goals
+Purpose &amp; Goals
 ---
 
 Practice setting up a complex project infrastructure from scratch, and to use the results as a template for future projects.
@@ -76,7 +84,7 @@ Directory Structure
 	- docs/		(binary files: .pdf, .docx, etc.)
 	- media/		(audio, video, etc.)
 	- fonts/		(web fonts)
-- **/staging/**		(local compiled site for testing & review)
+- **/staging/**		(local compiled site for testing &amp; review)
 	- index.html
 	- pages/		(partials for SPA views, compiled from /assets/templates)
 	- css/			(minified & sourcemapped)
